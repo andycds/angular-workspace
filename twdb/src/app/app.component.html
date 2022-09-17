@@ -1,0 +1,17 @@
+<div class="container">
+    <form>
+    <div class="form-group">
+            <label for="nomeInput">Nome</label>
+            <input type="nome" class="form-control" id="nomeInput" placeholder="Digite um nome" #nomeInput>
+    </div>
+    <button type="button" class="btn btn-primary btn-block" (click)="adicionar(nomeInput)">Adicionar</button>
+    <div class="alert alert-primary mt-3 p-3" [hidden]="esconderCaixa">
+        {{nome}}
+    </div>
+    </form>
+    
+    <label for="produtoInput">Produto</label>
+    <input type="text" class="form-control" id="produtoInput" [(ngModel)]="produto" #produtoInput>
+    <button type="button" class="btn btn-primary btn-block" (click)="alterarProduto(produtoInput)">Alterar produto</button>
+    {{produto}}
+</div>
