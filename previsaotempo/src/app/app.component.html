@@ -1,5 +1,12 @@
 <div class="container">
   <div class="row">
+    <div class="form-group">
+      <label for="cidadeInput">Cidade</label>
+      <input class="form-control" placeholder="São Paulo" #cityInput>
+    </div>
+    <button type="button" (click)="recarregar(cityInput)" class="btn btn-primary btn-block">Obter</button>
+  </div>
+  <div class="row">
     <app-previsao class="col-4 mb-2" *ngFor="let previsao of previsoes" [previsao]="previsao"></app-previsao>
   </div>
 </div>

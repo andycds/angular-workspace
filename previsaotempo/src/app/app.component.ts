@@ -9,15 +9,21 @@ import { PrevisoesService } from './previsoes.service';
 })
 export class AppComponent {
   title = 'previsaotempo';
-
   previsoes!: Previsao[];
 
   constructor(private previsoesService: PrevisoesService) {
-    previsoesService.obterPrevisoes().subscribe((previsoes: any) => {
+    previsoesService.obterPrevisoes("sao paulo").subscribe((previsoes: any) => {
       this.previsoes = previsoes['list'];
       console.log(this.previsoes);
     });
     //this.previsoes = previsoesService.obterPrevisoes();
+  }
+
+  recarregar(city: any) {
+    this.previsoesService.obterPrevisoes(city.value).subscribe((previsoes: any) => {
+      this.previsoes = previsoes['list'];
+    });
+
   }
 
 }

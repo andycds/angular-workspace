@@ -39,7 +39,7 @@ export class PrevisoesService {
 
   constructor(private httpClient: HttpClient) { }
 
-  public obterPrevisoes(): Observable<Previsao[]> {
-    return this.httpClient.get<Previsao[]>('http://api.openweathermap.org/data/2.5/forecast?q=sao%20paulo&appid=be8b5a409db5a652138d22f3a50368f9&units=metric&lang=pt_br&cnt=16');
+  public obterPrevisoes(cidade: string): Observable<Previsao[]> {
+    return this.httpClient.get<Previsao[]>('http://api.openweathermap.org/data/2.5/forecast?q=' + cidade + '&appid=be8b5a409db5a652138d22f3a50368f9&units=metric&lang=pt_br&cnt=16');
   }
 }
