@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 
+const Cliente = require('./models/cliente');
+
 const clientes = [
   {
     id: '1',
