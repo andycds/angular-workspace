@@ -43,14 +43,18 @@ app.post('/api/clientes', (req, res, next) => {
     fone: req.body.fone,
     email: req.body.email
   });
-  cliente.save();
-  console.log(cliente);
-  res.status(201).json({ mensagem: 'Cliente inserido' });
+  cliente.save().then(clienteInserido => {
+    res.status(201).json({
+      mensagem: 'Cliente inserido',
+      id: clienteInserido._id
+    })
+  });
 });
 
 
 app.get('/api/clientes', (req, res, next) => {
   Cliente.find().then(documents => {
+    console.log(documents);
     res.status(200).json({
       mensagem: "Tudo OK",
       clientes: documents
@@ -58,12 +62,18 @@ app.get('/api/clientes', (req, res, next) => {
   })
 });
 
-app.use('/api/clientes', (req, res, next) => {
-  res.status(200).json({
-    mensagem: "Tudo OK",
-    clientes: clientes
+// app.use('/api/clientes', (req, res, next) => {
+//   res.status(200).json({
+//     mensagem: "Tudo OK",
+//     clientes: clientes
+//   });
+// });
+
+app.delete('/api/clientes/:id', (req, res, next) => {
+  Cliente.deleteOne({ _id: req.params.id }).then((resultado) => {
+    console.log(resultado);
+    res.status(200).json({ mensagem: "Cliente removido" })
   });
 });
-
 
 module.exports = app;
