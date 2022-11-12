@@ -61,13 +61,32 @@ export class ClienteService {
     return this.clientes;
   }
 
-  removerCliente(id: string): void {
+  getCliente(idCliente: string | null) {
+    //return { ...this.clientes.find((cli) => cli.id === idCliente) };
+    return this.httpClient.get<{
+      _id: string, nome: string, fone: string, email: string
+    }>(`http://localhost:3000/api/clientes/${idCliente}`);
+  }
+
+
+  removerCliente(id?: string): void {
     this.httpClient.delete(`http://localhost:3000/api/clientes/${id}`).subscribe(() => {
       this.clientes = this.clientes.filter((cli) => {
         return cli.id !== id
       });
       this.listaClientesAtualizada.next([...this.clientes]);
     });
+  }
+
+  atualizarCliente(id: string, nome?: string, fone?: string, email?: string) {
+    const cliente: Cliente = { id, nome, fone, email };
+    this.httpClient.put(`http://localhost:3000/api/clientes/${id}`, cliente).subscribe((res => {
+      const copia = [...this.clientes];
+      const indice = copia.findIndex(cli => cli.id === cliente.id);
+      copia[indice] = cliente;
+      this.clientes = copia;
+      this.listaClientesAtualizada.next([...this.clientes]);
+    }));
   }
 
 }

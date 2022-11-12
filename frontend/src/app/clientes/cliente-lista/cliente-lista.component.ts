@@ -42,7 +42,7 @@ export class ClienteListaComponent implements OnInit, OnDestroy {
     this.clientesSubscription.unsubscribe();
   }
 
-  onDelete(id: string): void {
+  onDelete(id?: string): void {
     this.clienteService.removerCliente(id);
   }
 }
