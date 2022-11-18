@@ -12,6 +12,7 @@ export class ClienteListaComponent implements OnInit, OnDestroy {
 
   clientes: Cliente[] = [];
   private clientesSubscription !: Subscription;
+  public estaCarregando = false;
   // clientes: any[] = [];
 
   // clientes: Cliente[] = [
@@ -30,10 +31,12 @@ export class ClienteListaComponent implements OnInit, OnDestroy {
   constructor(public clienteService: ClienteService) { }
 
   ngOnInit(): void {
+    this.estaCarregando = true;
     this.clientes = this.clienteService.getClientes();
     this.clientesSubscription = this.clienteService
       .getListaDeClientesAtualizadaObservable()
       .subscribe((clientes: Cliente[]) => {
+        this.estaCarregando = false;
         this.clientes = clientes;
       });
   }
