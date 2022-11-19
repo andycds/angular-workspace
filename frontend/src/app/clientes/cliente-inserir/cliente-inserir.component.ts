@@ -4,6 +4,7 @@ import { MatFormField } from "@angular/material/form-field";
 import { Cliente } from "../cliente.model";
 import { ClienteService } from "../cliente.service";
 import { ActivatedRoute, ParamMap } from "@angular/router";
+import { mimeTypeValidator } from "./mime-type.validator";
 
 @Component({
   selector: 'app-cliente-inserir',
@@ -20,6 +21,7 @@ export class ClienteInserirComponent implements OnInit {
   public estaCarregando: boolean = false;
   // @ts-ignore
   form: FormGroup;
+  previewImagem: string = "";
 
   ngOnInit(): void {
     this.form = new FormGroup({
@@ -31,6 +33,10 @@ export class ClienteInserirComponent implements OnInit {
       }),
       email: new FormControl(null, {
         validators: [Validators.required, Validators.email]
+      }),
+      imagem: new FormControl(null, {
+        validators: [Validators.required],
+        asyncValidators: [mimeTypeValidator]
       })
     });
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
@@ -44,12 +50,14 @@ export class ClienteInserirComponent implements OnInit {
             id: dadosCli._id,
             nome: dadosCli.nome,
             fone: dadosCli.fone,
-            email: dadosCli.email
+            email: dadosCli.email,
+            imagemURL: dadosCli.imagemURL
           };
           this.form.setValue({
             nome: this.cliente.nome,
             fone: this.cliente.fone,
-            email: this.cliente.email
+            email: this.cliente.email,
+            imagemURL: this.cliente.imagemURL
           })
         });
       } else {
@@ -68,17 +76,30 @@ export class ClienteInserirComponent implements OnInit {
       this.clienteService.adicionarCliente(
         this.form.value.nome,
         this.form.value.fone,
-        this.form.value.email
+        this.form.value.email,
+        this.form.value.imagem
       );
     } else {
       this.clienteService.atualizarCliente(
         this.idCliente ?? "0",
         this.form.value.nome,
         this.form.value.fone,
-        this.form.value.email
+        this.form.value.email,
+        this.form.value.imagem
       )
     }
     this.form.reset();
   }
 
+  onImagemSelecionada(event: Event) {
+    //@ts-ignore
+    var arquivo = (event.target as HTMLInputElement).files[0];
+    this.form.patchValue({ 'imagem': arquivo });
+    this.form.get('imagem')?.updateValueAndValidity();
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.previewImagem = reader.result as string;
+    }
+    reader.readAsDataURL(arquivo);
+  }
 }

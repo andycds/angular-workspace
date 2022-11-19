@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
@@ -29,6 +30,8 @@ const clientes = [
 ];
 
 app.use(bodyParser.json());
+
+app.use('/imagens', express.static(path.join("backend/imagens")));
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', "*");
