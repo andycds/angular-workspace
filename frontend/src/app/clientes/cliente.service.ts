@@ -51,11 +51,12 @@ export class ClienteService {
     return this.listaClientesAtualizada.asObservable();
   }
 
-  getClientes(): Cliente[] {
+  getClientes(pagesize: number, page: number): Cliente[] {
+    const parametros = `?pagesize=${pagesize}&page=${page}`;
     this.httpClient.get<{
       mensagem: string, clientes:
       any
-    }>('http://localhost:3000/api/clientes')
+    }>('http://localhost:3000/api/clientes' + parametros)
       .pipe(map((dados) => {
         return dados.clientes.map((cliente: { _id: any; nome: any; fone: any; email: any; imagemURL: any }) => {
           return {
